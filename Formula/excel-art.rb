@@ -9,9 +9,7 @@ class ExcelArt < Formula
   depends_on "openjdk@21"
 
   def install
-    bin.install "excel-art"
-
-    # Java 경로를 환경변수로 설정하는 wrapper 생성
+    # 실행 파일을 libexec에 설치하고, JAVA_HOME을 설정하는 wrapper를 bin에 생성
     libexec.install "excel-art" => "excel-art-bin"
     (bin/"excel-art").write <<~EOS
       #!/bin/bash
@@ -19,6 +17,7 @@ class ExcelArt < Formula
       export PATH="$JAVA_HOME/bin:$PATH"
       exec "#{libexec}/excel-art-bin" "$@"
     EOS
+    (bin/"excel-art").chmod 0755
   end
 
   test do
